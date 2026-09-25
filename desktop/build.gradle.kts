@@ -55,18 +55,8 @@ val buildArkhamLaunchers by tasks.registering {
         val outDir = file("src/main/resources/jail")
         outDir.mkdirs()
         
-        if (isWin) {
-            val exe = file("src/main/cpp/build/Release/arkham-launcher.exe")
-            if (!exe.exists()) {
-                val debugExe = file("src/main/cpp/build/Debug/arkham-launcher.exe")
-                if (debugExe.exists()) debugExe.copyTo(file("src/main/resources/jail/arkham-launcher.exe"), overwrite = true)
-            } else {
-                exe.copyTo(file("src/main/resources/jail/arkham-launcher.exe"), overwrite = true)
-            }
-        } else {
-            val exe = file("src/main/cpp/build/arkham-launcher-linux")
-            if (exe.exists()) exe.copyTo(file("src/main/resources/jail/arkham-launcher-linux"), overwrite = true)
-        }
+        val exe = file("src/main/cpp/build/arkham-launcher-linux")
+        if (exe.exists()) exe.copyTo(file("src/main/resources/jail/arkham-launcher-linux"), overwrite = true)
     }
 }
 
@@ -85,24 +75,14 @@ compose.desktop {
         }
 
         nativeDistributions {
-            targetFormats(
-                TargetFormat.Msi,
-                TargetFormat.Exe,
-                TargetFormat.Deb,
-                TargetFormat.Rpm
-            )
+            targetFormats(TargetFormat.Deb, TargetFormat.Rpm)
             packageName = "PDFchemy"
             packageVersion = "1.0.10"
             description = "PDFchemy Tools - Local-First Offline PDF Utility"
             copyright = "© 2026 Andrei Ioan Cucos. All rights reserved."
             vendor = "PDFchemy"
 
-            windows {
-                menuGroup = "PDFchemy"
-                upgradeUuid = "8513DA13-D4B7-31E1-9C15-4ECBE0CAA4D7"
-                shortcut = true
-                iconFile.set(project.file("src/main/resources/icons/windows/icon.ico"))
-            }
+
 
             linux {
                 shortcut = true
